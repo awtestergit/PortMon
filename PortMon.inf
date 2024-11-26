@@ -1,0 +1,62 @@
+;
+; PortMon.inf
+;
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=System
+ClassGuid={4d36e97d-e325-11ce-bfc1-08002be10318}
+Provider=%ManufacturerName%
+DriverVer=11/25/2024,1.0.0.0;
+CatalogFile=PortMon.cat
+PnpLockdown=1
+
+[DestinationDirs]
+DefaultDestDir = 13
+
+[SourceDisksNames]
+1 = %DiskName%,,,""
+
+[SourceDisksFiles]
+PortMon.sys  = 1,,
+
+;*****************************************
+; Install Section
+;*****************************************
+
+[Manufacturer]
+%ManufacturerName% = Standard,NT$ARCH$.10.0...16299 ; %13% support introduced in build 16299
+
+[Standard.NT$ARCH$.10.0...16299]
+%PortMon.DeviceDesc% = PortMon_Device, Root\PortMon ; TODO: edit hw-id
+
+[PortMon_Device.NT]
+CopyFiles = File_Copy
+
+[File_Copy]
+PortMon.sys
+
+;-------------- Service installation
+[PortMon_Device.NT.Services]
+AddService = PortMon,%SPSVCINST_ASSOCSERVICE%, PortMon_Service_Inst
+
+; -------------- PortMon driver install sections
+[PortMon_Service_Inst]
+DisplayName    = %PortMon.SVCDESC%
+ServiceType    = 1               ; SERVICE_KERNEL_DRIVER
+StartType      = 3               ; SERVICE_DEMAND_START
+ErrorControl   = 1               ; SERVICE_ERROR_NORMAL
+ServiceBinary  = %13%\PortMon.sys
+
+[PortMon_Device.NT.Wdf]
+KmdfService = PortMon, PortMon_wdfsect
+
+[PortMon_wdfsect]
+KmdfLibraryVersion = $KMDFVERSION$
+
+[Strings]
+SPSVCINST_ASSOCSERVICE = 0x00000002
+ManufacturerName = "PortMon LLC" ;TODO: Replace with your manufacturer name
+DiskName = "PortMon Installation Disk"
+PortMon.DeviceDesc = "PortMon Device"
+PortMon.SVCDESC = "PortMon Service"

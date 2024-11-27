@@ -106,5 +106,9 @@ if __name__ == "__main__":
     fetch_thread = Thread(target=continuous_event_fetch, daemon=True)
     fetch_thread.start()
 
+    # Wait for the fetch_thread to finish
+    fetch_thread.join()
+    print("Thread has completed. Exiting main program.")
+
     #app.run(host="0.0.0.0", port=5000)
 

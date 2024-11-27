@@ -6,7 +6,7 @@ import json
 from threading import Thread, Lock
 
 # Constants
-IOCTL_GET_EVENT = 0x00226000  # Replace with the actual IOCTL code
+IOCTL_GET_EVENT = 0x00226000  # #define IOCTL_GET_PORT_EVENTS CTL_CODE(FILE_DEVICE_UNKNOWN, 0x800, METHOD_BUFFERED, FILE_READ_ACCESS)
 DEVICE_PATH = r"\\.\PortMonDriver"  # Windows device path
 EVENT_STRUCT_FORMAT = "QHHIB"  # Matches the driver structure: Timestamp, Protocol, Port, ProcessId, IsAssignment
 EVENT_STRUCT_SIZE = struct.calcsize(EVENT_STRUCT_FORMAT)
